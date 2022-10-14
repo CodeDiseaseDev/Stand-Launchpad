@@ -42,6 +42,9 @@ namespace StandLaunchpad
         public string standDll;
         public Timer timer;
 
+        public static string SettingsFile = Path.Combine(Stand.StandPath(), "Launchpad.txt");
+        public static Settings settings = Settings.ReadFile(SettingsFile);
+
         private void timerTick(object _)
         {
             bool gtaRunning = Stand.IsGtaRunning();
@@ -50,14 +53,19 @@ namespace StandLaunchpad
                     Visibility.Visible :
                     Visibility.Hidden;
 
-            injectBtn.Dispatcher.Invoke(() =>
-                {
+            injectBtn.Dispatcher.Invoke(
+                () => {
                     injectBtn.Visibility = visibility;
                     autoInject.IsEnabled = !gtaRunning;
-
                 },
                 DispatcherPriority.Normal
             );
+        }
+
+        private void UseSettings(Settings settings)
+        {
+            advancedMode = settings.AdvancedMode;
+            SetAdvancedMode(advancedMode);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -108,6 +116,8 @@ namespace StandLaunchpad
             SetAdvancedMode(false);
 
             standDll = await Stand.GetDllPath();
+
+            UseSettings(settings);
         }
 
         private void autoInject_Click(object sender, RoutedEventArgs e)
@@ -130,6 +140,9 @@ namespace StandLaunchpad
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             advancedMode = !advancedMode;
+
+            settings.AdvancedMode = advancedMode;
+            settings.Save(SettingsFile);
 
             SetAdvancedMode(advancedMode);
         }
