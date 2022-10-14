@@ -242,7 +242,7 @@ namespace StandLaunchpad
                     {
                         using (RegistryKey rockstar = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WOW6432Node\\Rockstar Games\\Launcher"))
                         {
-                            if (rockstar != null)
+                            if (rockstar == null)
                                 MessageBox.Show("R* games might not be installed");
 
                             string dir = (string)rockstar.GetValue("InstallFolder");
