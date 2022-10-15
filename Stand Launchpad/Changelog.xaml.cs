@@ -22,6 +22,15 @@ namespace StandLaunchpad
         public Changelog()
         {
             InitializeComponent();
+
+            
+        }
+
+        SplashScreen splashScreen;
+
+        private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

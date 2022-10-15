@@ -10,7 +10,7 @@ namespace StandLaunchpad
 {
     public class Settings
     {
-        public bool AdvancedMode = false;
+        public bool AdvancedMode = true;
 
         public void Save(string file)
         {

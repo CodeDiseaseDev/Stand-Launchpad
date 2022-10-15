@@ -7,9 +7,28 @@
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Background="#222"
+        WindowStartupLocation="CenterScreen"
         Style="{DynamicResource CustomWindowStyle}"
         Title="Stand Launchpad" Height="224" Width="598">
+
     <Grid Margin="10,10">
+        <Grid.Effect>
+            <BlurEffect x:Name="blurEffect" Radius="0"/>
+        </Grid.Effect>
+
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="Radius"
+                            Storyboard.TargetName="blurEffect"
+                            From="10" To="0" Duration="00:00:00.5"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="mainOptions" Width="7*"></ColumnDefinition>
             <ColumnDefinition x:Name="advancedOptions" Width="10*"></ColumnDefinition>
@@ -78,7 +97,7 @@
             </Button>
 
             <Label Margin="-5,5,0,0" Name="statusText" Grid.Row="5">
-                Ready to inject ; just start the game.
+                Ready to inject
             </Label>
         </Grid>
 
@@ -86,24 +105,23 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="110"></ColumnDefinition>
+                    <ColumnDefinition Width="45"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                    <Button Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Top" Padding="8,0" Height="25">
-                        Quit GTA
+                    <Button Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Top" Padding="8,0" Height="25" Click="Button_Click_5">
+                        +
                     </Button>
 
-                    <Button Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Top" Padding="8,0" Height="25">
-                        Quit R* Games
+                    <Button Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Top" Padding="8,0" Height="25" Click="Button_Click_6">
+                        -
                     </Button>
                 </StackPanel>
 
-                <ListBox Grid.Column="0">
-                    <CheckBox>Poggers</CheckBox>
-                    <CheckBox>Poggers</CheckBox>
-                    <CheckBox>Poggers</CheckBox>
-                    <CheckBox>Poggers</CheckBox>
+                <ListBox Name="dllCheckboxes" Grid.Column="0" SelectionMode="Extended">
+                    <CheckBox>C:\path\to\dll.dll</CheckBox>
+                    <CheckBox>C:\path\to\a\dll.dll</CheckBox>
+                    <CheckBox>C:\path\to\a\mod\dll.dll</CheckBox>
                 </ListBox>
             </Grid>
 

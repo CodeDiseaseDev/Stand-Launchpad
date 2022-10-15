@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -18,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using static System.Windows.Forms.ListBox;
 using Path = System.IO.Path;
 
 namespace StandLaunchpad
@@ -40,6 +43,9 @@ namespace StandLaunchpad
         public static MainWindow StaticWindow;
         public bool advancedMode = false;
         public string standDll;
+
+        public List<string> dlls = new List<string>();
+
         public Timer timer;
 
         public static string SettingsFile = Path.Combine(Stand.StandPath(), "Launchpad.txt");
@@ -103,7 +109,12 @@ namespace StandLaunchpad
 
                     if (Stand.Inject(dllPath, pid))
                     {
+                        statusText.Content = $"Injected Stand into PID {pid}";
                         MessageBox.Show("You're a [Stand User] now! :D");
+                    }
+                    else
+                    {
+                        statusText.Content = $"Failed to inject Stand into PID {pid}";
                     }
                 }
             }
@@ -175,15 +186,86 @@ namespace StandLaunchpad
             Stand.OpenChangelog();
         }
 
+        //void injectAll()
+        //{
+        //    var selectedItems = dllCheckboxes.SelectedItems;
+
+        //    for (int i = selectedItems.Count - 1; i >= 0; i--)
+        //    {
+        //        var item = selectedItems[i] as ListBoxItem;
+        //        Console.WriteLine(item.IsSelected);
+        //    }
+        //}
+
         private async void injectBtn_Click(object sender, RoutedEventArgs e)
         {
             uint pid = Stand.GetProcessId();
             string dllPath = await Stand.GetDllPath(); // check stand dll and download if required
 
+            //injectAll();
+            //return;
+
             if (Stand.Inject(dllPath, pid))
             {
                 statusText.Content = $"Injected Stand into PID {pid}";
                 MessageBox.Show("You're a [Stand User] now! :D");
+            }
+            else
+            {
+                statusText.Content = $"Failed to inject Stand into PID {pid}";
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            dllCheckboxes.Items.Add(new CheckBox()
+            {
+                Content = "new checkbox :o",
+
+            });
+
+            //OpenFileDialog fg = new OpenFileDialog();
+            //fg.Multiselect = true;
+            //fg.Filter = "DLL Files|*.dll";
+
+            //if (fg.ShowDialog().Value)
+            //{
+            //    foreach (var file in fg.FileNames)
+            //    {
+            //        dllCheckboxes.Items.Add(new CheckBox()
+            //        {
+            //            Content = file,
+
+            //        });
+            //        dlls.Add(file);
+            //    }
+            //}
+        }
+
+        //private void UpdateDlls(List<string> dlls)
+        //{
+        //    dllCheckboxes.Items.Clear();
+        //    foreach (var dll in dlls)
+        //    {
+        //        dllCheckboxes.Items.Add(new ListBoxItem().Children);
+        //    }
+        //}
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = dllCheckboxes.SelectedItems;
+
+            if (dllCheckboxes.SelectedIndex != -1)
+            {
+                for (int i = selectedItems.Count - 1; i >= 0; i--)
+                {
+                    dllCheckboxes.Items.Remove(selectedItems[i]);
+                    //dlls.RemoveAt(i);
+                }
+            }
+            else
+            {
+                SystemSounds.Asterisk.Play();
             }
         }
     }
